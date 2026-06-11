@@ -1,0 +1,99 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StudentMapper">
+
+    <select id="selectAll" resultType="com.example.entity.VO.StudentVO">
+        select s.*, de.dept_name as deptName
+        from `student` s
+        left join `department` de on s.dept_id = de.dept_id
+        <where>
+            <if test="id != null">
+                and s.id = #{id}
+            </if>
+            <if test="userInfo != null">
+                and ( username like concat(#{userInfo}, '%') OR name like concat('%', #{userInfo}, '%'))
+            </if>
+            <if test="grade != null">
+                and grade = #{grade}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.Student" useGeneratedKeys="true" keyProperty="id">
+        insert into `student` (id, username, password, salt, name, gender, phone, email, avatar, dept_id, grade, sort,
+            public_credits, foreign_language_credits, sport_credits, art_credits, status)
+        values (#{id}, #{username}, #{password}, #{salt}, #{name}, #{gender}, #{phone}, #{email}, #{avatar}, #{deptId}, #{grade}, #{sort},
+                #{publicCredits}, #{foreignLanguageCredits}, #{sportCredits}, #{artCredits}, #{status})
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Student">
+        update `student`
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="publicCredits != null">
+                public_credits = #{publicCredits},
+            </if>
+            <if test="foreignLanguageCredits != null">
+                foreign_language_credits = #{foreignLanguageCredits},
+            </if>
+            <if test="sportCredits != null">
+                sport_credits = #{sportCredits},
+            </if>
+            <if test="artCredits != null">
+                art_credits = #{artCredits},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from `student` where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--验证判断-->
+    <select id="existsByUserName" resultType="java.lang.Boolean">
+        SELECT EXISTS(select *
+                      from `student`
+                      where username = #{username})
+    </select>
+
+</mapper>

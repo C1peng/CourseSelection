@@ -1,0 +1,97 @@
+/**
+ * 表格组件样式
+ * 统一表格的外观和交互
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 表格容器 ==================== */
+.table-container {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-container__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-container__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.table-container__actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ==================== 表格样式覆盖 ==================== */
+.data-table {
+  --el-table-border-color: var(--border-color-light);
+  --el-table-header-bg-color: var(--bg-gray-light);
+  --el-table-row-hover-bg-color: #f5f7ff;
+  --el-table-current-row-bg-color: #edf3ff;
+}
+
+.data-table :deep(.el-table__header-wrapper th.el-table__cell) {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  background-color: var(--bg-gray-light);
+  padding: var(--space-md) 0;
+}
+
+.data-table :deep(.el-table__body-wrapper td.el-table__cell) {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  padding: var(--space-sm) 0;
+}
+
+.data-table :deep(.el-table__row:hover td.el-table__cell) {
+  background-color: #f5f7ff;
+}
+
+/* ==================== 表格操作列 ==================== */
+.table-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.table-actions .el-button {
+  padding: var(--space-xs) var(--space-sm);
+}
+
+/* ==================== 表格分页 ==================== */
+.table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+/* ==================== 表格空状态 ==================== */
+.table-empty {
+  padding: var(--space-2xl) 0;
+}
+
+/* ==================== 响应式表格 ==================== */
+@media (max-width: 768px) {
+  .table-container__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .table-pagination {
+    justify-content: center;
+  }
+}

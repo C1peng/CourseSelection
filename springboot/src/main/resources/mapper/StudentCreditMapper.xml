@@ -1,0 +1,79 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StudentCreditMapper">
+    <select id="selectSCourseLine" resultType="com.example.entity.BO.StSType">
+        SELECT
+            c.course_name, cs.credits_type, c.credits, cs.semester, sts.ordinary_credit, sts.exam_credit,
+            sts.total_credit, sts.status
+        FROM (select scourse_id, ordinary_credit, exam_credit, total_credit, status from student_section where student_id = #{studentId}) sts
+        JOIN course_section cs ON cs.id = sts.scourse_id
+        JOIN course c ON c.id = cs.course_id
+<!--        <where>-->
+<!--            <if test="courseName != null and courseName != ''">-->
+<!--                AND c.course_name LIKE CONCAT('%', #{courseName}, '%')-->
+<!--            </if>-->
+<!--            <if test="semester != null and semester != ''">-->
+<!--                AND cs.semester = #{semester}-->
+<!--            </if>-->
+<!--        </where>-->
+    </select>
+
+    <select id="selectStudent" resultType="com.example.entity.BO.StSType">
+        SELECT ss.id, cs.status courseStatus, c.course_name, t.name teacherName, ss.student_name studentName, ss.ordinary_credit, ss.exam_credit, ss.total_credit, ss.status
+        FROM student_section ss
+        JOIN course_section cs ON cs.id = ss.scourse_id
+        JOIN course c ON c.id = cs.course_id
+        JOIN teacher t ON t.id = cs.teacher_id
+        <where>
+            <if test="teacherId != null">
+                cs.teacher_id = #{teacherId}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                AND c.course_name LIKE CONCAT('%', #{courseName}, '%')
+            </if>
+            <if test="studentName != null and studentName != ''">
+                AND ss.student_name LIKE CONCAT('%', #{studentName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateStudentCredit" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE student_section
+            <set>
+                <if test="item.ordinaryCredit != null">
+                    ordinary_credit = #{item.ordinaryCredit},
+                </if>
+                <if test="item.examCredit != null">
+                    exam_credit = #{item.examCredit},
+                </if>
+                <if test="item.totalCredit != null">
+                    total_credit = #{item.totalCredit},
+                </if>
+                <if test="item.status != null">
+                    status = #{item.status},
+                </if>
+                <if test="true">
+                    update_time = NOW()
+                </if>
+            </set>
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteStudent" parameterType="java.util.List">
+        DELETE FROM student_section WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCourseIdsByIds" resultType="java.lang.Integer">
+        SELECT scourse_id FROM student_section WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

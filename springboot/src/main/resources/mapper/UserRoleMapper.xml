@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.entity.UserRole">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_type" property="userType"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+    <insert id="insertList">
+        INSERT INTO `user_role` (user_id, user_type, role_id)
+        VALUES
+        <foreach collection="userRoles" item="userRole" separator=",">
+            (#{userRole.userId}, #{userRole.userType}, #{userRole.roleId})
+        </foreach>
+    </insert>
+    <delete id="deleteBatch">
+        DELETE FROM `user_role` WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+     <update id="updateById">
+        UPDATE `user_role`
+        SET role_id = #{roleId}
+        WHERE id = #{id}
+    </update>
+
+    <!--    <select id="findByUserIdAndType" parameterType="map" resultMap="BaseResultMap">-->
+<!--        SELECT * FROM `user_role` WHERE user_id = #{userId} AND user_type = #{userType}-->
+<!--    </select>-->
+
+<!--    <select id="findByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+<!--        SELECT * FROM `user_role` WHERE role_id = #{roleId}-->
+<!--    </select>-->
+
+<!--    <insert id="insert" parameterType="com.example.entity.UserRole" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO `user_role` (user_id, user_type, role_id)-->
+<!--        VALUES (#{userId}, #{userType}, #{roleId})-->
+<!--    </insert>-->
+
+<!--    <delete id="deleteByUserIdAndTypeAndRoleId" parameterType="map">-->
+<!--        DELETE FROM `user_role`-->
+<!--        WHERE user_id = #{userId} AND user_type = #{userType} AND role_id = #{roleId}-->
+<!--    </delete>-->
+
+    <select id="findByUserIdAndType" resultType="com.example.entity.Role">
+        SELECT r.*
+        FROM `role` r
+                 INNER JOIN `user_role` ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId} AND ur.user_type = #{userType}
+    </select>
+
+<!--验证判断-->
+    <select id="existsByRoleId" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM `user_role` WHERE role_id = #{roleId})
+    </select>
+
+<!--     <select id="findAllUserRoleRelations" resultType="com.example.entity.VO.UserRoleVO">-->
+<!--        SELECT -->
+<!--            ur.id,-->
+<!--            CASE -->
+<!--                WHEN ur.user_type = 'admin' THEN a.username-->
+<!--                WHEN ur.user_type = 'teacher' THEN t.username-->
+<!--                WHEN ur.user_type = 'student' THEN s.username-->
+<!--                ELSE NULL -->
+<!--            END as userName,-->
+<!--            CASE -->
+<!--                WHEN ur.user_type = 'admin' THEN a.name-->
+<!--                WHEN ur.user_type = 'teacher' THEN t.name-->
+<!--                WHEN ur.user_type = 'student' THEN s.name-->
+<!--                ELSE NULL -->
+<!--            END as name,-->
+<!--            ur.user_type as userType,-->
+<!--            r.role_name as rolename-->
+<!--        FROM `user_role` ur-->
+<!--        LEFT JOIN `role` r ON ur.role_id = r.id-->
+<!--        LEFT JOIN `admin` a ON ur.user_type = 'admin' AND ur.user_id = a.id-->
+<!--        LEFT JOIN `teacher` t ON ur.user_type = 'teacher' AND ur.user_id = t.id-->
+<!--        LEFT JOIN `student` s ON ur.user_type = 'student' AND ur.user_id = s.id-->
+<!--    </select>-->
+
+    <select id="getAllUserInfo" resultType="com.example.entity.VO.UserRoleVO">
+        SELECT
+            COALESCE(ur.id, -s.id) as id,
+            s.username as username,
+            s.name as name,
+            'STUDENT' as userType,
+            COALESCE(r.role_name, '') as roleName
+        FROM `student` s
+        LEFT JOIN `user_role` ur ON s.id = ur.user_id AND ur.user_type = 'STUDENT'
+        LEFT JOIN `role` r ON ur.role_id = r.id
+        UNION ALL
+        SELECT
+            COALESCE(ur.id, -t.id) as id,
+            t.username as username,
+            t.name as name,
+            'TEACHER' as userType,
+            COALESCE(r.role_name, '') as roleName
+        FROM `teacher` t
+        LEFT JOIN `user_role` ur ON t.id = ur.user_id AND ur.user_type = 'TEACHER'
+        LEFT JOIN `role` r ON ur.role_id = r.id
+    </select>
+</mapper>

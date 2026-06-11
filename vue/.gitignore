@@ -1,0 +1,64 @@
+# 上传到gitee限制哪些文件不用上传
+# 日志文件：各种npm、yarn等包管理器的日志文件
+# 依赖目录：node_modules和相关的依赖文件
+# 构建输出：dist目录和其他构建产物
+# 编辑器配置：VS Code、IntelliJ IDEA等编辑器生成的文件
+# 环境变量文件：.env系列文件，特别是本地配置文件
+# 测试覆盖报告：coverage目录和相关文件
+# 临时文件：临时文件和缓存
+# 操作系统生成的文件：如Thumbs.db
+# 包管理器锁文件：可选，根据团队习惯决定是否忽略
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# OS files
+Thumbs.db
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

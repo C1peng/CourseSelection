@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.RolePermissionMapper">
+    <!-- 根据角色ID查询权限名称列表 -->
+    <select id="findPermissionByRoleId" parameterType="java.lang.Integer" resultType="com.example.entity.Permission">
+        SELECT p.id, p.permission_name
+        FROM `permission` p
+                 INNER JOIN `role_permission` rp ON p.id = rp.permission_id
+        WHERE rp.role_id = #{roleId}
+    </select>
+
+    <!-- 为角色分配权限 -->
+    <insert id="assignPermissions">
+        INSERT INTO `role_permission` (role_id, permission_id)
+        VALUES
+        <foreach collection="permissionIds" item="permissionId" separator=",">
+            (#{roleId}, #{permissionId})
+        </foreach>
+    </insert>
+    <!-- 清空角色的所有权限 -->
+    <delete id="clearPermissions" parameterType="java.lang.Integer">
+        DELETE FROM `role_permission` WHERE role_id = #{roleId}
+    </delete>
+</mapper>

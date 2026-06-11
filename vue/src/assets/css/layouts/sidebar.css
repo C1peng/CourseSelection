@@ -1,0 +1,115 @@
+/**
+ * 侧边栏样式
+ * 主要用于管理后台的侧边导航
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 侧边栏容器 ==================== */
+.sidebar {
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-color);
+  transition: width var(--transition-normal);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sidebar__content {
+  padding: var(--space-md) 0;
+}
+
+/* ==================== 菜单样式 ==================== */
+.sidebar__menu {
+  border-right: none !important;
+  background: transparent !important;
+}
+
+.sidebar__menu :deep(.el-menu-item),
+.sidebar__menu :deep(.el-sub-menu__title) {
+  height: 48px;
+  line-height: 48px;
+  margin: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.sidebar__menu :deep(.el-menu-item:hover),
+.sidebar__menu :deep(.el-sub-menu__title:hover) {
+  background: rgba(5, 150, 105, 0.08);
+  color: var(--manager-primary);
+}
+
+.sidebar__menu :deep(.el-menu-item.is-active) {
+  background: rgba(5, 150, 105, 0.15);
+  color: var(--manager-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* 菜单图标 */
+.sidebar__menu-icon {
+  font-size: 18px;
+  margin-right: var(--space-sm);
+}
+
+/* ==================== 子菜单样式 ==================== */
+.sidebar__menu :deep(.el-sub-menu .el-menu-item) {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 52px !important;
+  margin: 2px var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+/* ==================== 分隔线 ==================== */
+.sidebar__divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: var(--space-md) var(--space-lg);
+}
+
+/* ==================== 折叠状态 ==================== */
+.sidebar--collapsed {
+  width: 72px;
+}
+
+.sidebar--collapsed .sidebar__menu :deep(.el-menu-item),
+.sidebar--collapsed .sidebar__menu :deep(.el-sub-menu__title) {
+  padding: 0 20px !important;
+}
+
+.sidebar--collapsed .sidebar__menu :deep(.el-sub-menu__title) {
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar__menu-icon {
+  margin-right: 0;
+}
+
+/* ==================== 菜单项徽章 ==================== */
+.menu-badge {
+  position: absolute;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ==================== 滚动条样式 ==================== */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

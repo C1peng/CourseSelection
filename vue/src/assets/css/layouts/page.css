@@ -1,0 +1,261 @@
+/**
+ * 页面布局框架
+ * 统一页面的整体布局结构
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 页面容器 ==================== */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== 主内容区 ==================== */
+.page-content {
+  flex: 1;
+  padding: var(--space-xl);
+  background: var(--front-bg);
+}
+
+.page-content--manager {
+  background: var(--manager-bg);
+}
+
+/* ==================== 页面标题区 ==================== */
+.page-header {
+  margin-bottom: var(--space-xl);
+}
+
+.page-header__title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.page-header__subtitle {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.page-header__actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* ==================== 带面包屑的页面头部 ==================== */
+.page-header--with-breadcrumb {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.page-header--with-breadcrumb .page-header__main {
+  flex: 1;
+}
+
+/* ==================== 页面主体网格 ==================== */
+.page-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+.page-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.page-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.page-grid--1-2 {
+  grid-template-columns: 1fr 2fr;
+}
+
+.page-grid--2-1 {
+  grid-template-columns: 2fr 1fr;
+}
+
+/* ==================== 页面分栏布局 ==================== */
+.page-split {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-xl);
+}
+
+.page-split--reverse {
+  grid-template-columns: 1fr 280px;
+}
+
+/* ==================== 欢迎横幅 ==================== */
+.welcome-banner {
+  background: var(--front-primary-gradient);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  color: #fff;
+  box-shadow: var(--shadow-front);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-xl);
+}
+
+.welcome-banner--manager {
+  background: var(--manager-primary-gradient);
+  box-shadow: var(--shadow-manager);
+}
+
+.welcome-banner__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-banner__title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-md) 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-banner__subtitle {
+  font-size: var(--font-size-md);
+  margin: 0 0 var(--space-xs) 0;
+  opacity: 0.95;
+}
+
+.welcome-banner__greeting {
+  font-size: var(--font-size-sm);
+  margin: 0;
+  opacity: 0.9;
+}
+
+.welcome-banner__actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.welcome-banner__image {
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-banner__image .el-icon {
+  font-size: 64px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 装饰性背景 */
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* ==================== 快捷操作栏 ==================== */
+.quick-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+/* ==================== 统计卡片网格 ==================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 1200px) {
+  .page-grid--4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .page-split,
+  .page-split--reverse {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .page-grid--3,
+  .page-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .page-grid--1-2,
+  .page-grid--2-1 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: var(--space-md);
+  }
+  
+  .page-grid,
+  .page-grid--3,
+  .page-grid--4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .welcome-banner {
+    padding: var(--space-xl);
+  }
+  
+  .welcome-banner__content {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .welcome-banner__image {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  .welcome-banner__title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .welcome-banner__actions {
+    flex-direction: column;
+  }
+  
+  .welcome-banner__actions .el-button {
+    width: 100%;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions {
+    flex-direction: column;
+  }
+}

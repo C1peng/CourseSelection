@@ -1,0 +1,136 @@
+/**
+ * 按钮组件样式扩展
+ * 扩展 Element Plus 按钮样式
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 渐变按钮 ==================== */
+.btn-gradient {
+  background: var(--front-primary-gradient);
+  border: none;
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 12px 24px;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  box-shadow: var(--shadow-front);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+/* 后台渐变按钮 */
+.btn-gradient--manager {
+  background: var(--manager-primary-gradient);
+  box-shadow: var(--shadow-manager);
+}
+
+.btn-gradient--manager:hover {
+  box-shadow: 0 16px 35px rgba(5, 150, 105, 0.5);
+}
+
+/* ==================== 操作按钮组 ==================== */
+.btn-group {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.btn-group--center {
+  justify-content: center;
+}
+
+.btn-group--right {
+  justify-content: flex-end;
+}
+
+/* ==================== 图标按钮 ==================== */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+/* ==================== 链接按钮 ==================== */
+.btn-link {
+  color: var(--front-primary);
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.btn-link:hover {
+  color: var(--front-primary-light);
+}
+
+.btn-link--manager {
+  color: var(--manager-primary);
+}
+
+.btn-link--manager:hover {
+  color: var(--manager-primary-light);
+}
+
+/* ==================== 快捷入口按钮 ==================== */
+.quick-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--bg-gray);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.quick-btn:hover {
+  background: var(--bg-white);
+  border-color: var(--front-primary);
+  color: var(--front-primary);
+}
+
+.quick-btn--manager:hover {
+  border-color: var(--manager-primary);
+  color: var(--manager-primary);
+}
+
+/* ==================== 浮动操作按钮 ==================== */
+.fab {
+  position: fixed;
+  right: var(--space-xl);
+  bottom: var(--space-xl);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--front-primary-gradient);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: var(--z-fixed);
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-xl);
+}
+
+.fab .el-icon {
+  font-size: 24px;
+}

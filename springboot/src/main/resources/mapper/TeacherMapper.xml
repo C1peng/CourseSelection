@@ -1,0 +1,93 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TeacherMapper">
+
+    <select id="selectAll" resultType="com.example.entity.VO.TeacherVO">
+        select t.*, d.dept_name as deptName
+        from `teacher` t
+        left join department d on t.dept_id = d.dept_id
+        <where>
+            <if test="id != null">
+                t.id = #{id}
+            </if>
+            <if test="userInfo != null">
+                AND (t.username LIKE CONCAT(#{userInfo}, '%') OR t.name LIKE CONCAT('%', #{userInfo}, '%'))
+            </if>
+            <if test="deptInfo != null">
+                AND (
+                t.dept_id = #{deptInfo} OR
+                d.dept_name LIKE CONCAT('%', #{deptInfo}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
+<!--    <insert id="insert" parameterType="com.example.entity.Teacher" useGeneratedKeys="true">-->
+<!--        insert into `teacher` (id, username, password, name, gender, avatar, role, dept_id, phone, email)-->
+<!--        values (#{id}, #{username}, #{password}, #{name}, #{gender}, #{avatar}, #{role}, #{deptId}, #{phone}, #{email})-->
+<!--    </insert>-->
+
+    <insert id="insert" parameterType="com.example.entity.Teacher" useGeneratedKeys="true">
+        insert into `teacher` (id, username, password, salt, name, gender, avatar, dept_id, phone, email)
+        values (#{id}, #{username}, #{password}, #{salt}, #{name}, #{gender}, #{avatar}, #{deptId}, #{phone}, #{email})
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Teacher">
+        update `teacher`
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+<!--            <if test="role != null">
+                role = #{role},
+            </if>-->
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from `teacher` where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--验证判断-->
+    <select id="existsById" resultType="java.lang.Boolean">
+        SELECT EXISTS(select 1
+                      from `teacher`
+                      where id = #{id})
+    </select>
+
+    <select id="existsByUserName" resultType="java.lang.Boolean">
+        SELECT EXISTS(select *
+                      from `teacher`
+                      where username = #{username})
+    </select>
+
+</mapper>

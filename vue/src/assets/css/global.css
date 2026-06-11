@@ -1,0 +1,92 @@
+/* 导入设计令牌和工具类 */
+@import './variables.css';
+@import './utilities.css';
+
+/* 基础重置 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 基础卡片样式 - 保留向后兼容 */
+.card {
+    background-color: var(--bg-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Element Plus 样式覆盖和扩展 */
+
+/* 表格样式优化 */
+.el-table {
+    --el-table-border-color: var(--border-color-light);
+    --el-table-header-bg-color: var(--bg-gray-light);
+    --el-table-row-hover-bg-color: #f5f7ff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.el-table th.el-table__cell {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+/* 按钮圆角统一 */
+.el-button {
+    border-radius: var(--radius-sm);
+}
+
+.el-button--primary {
+    border-radius: var(--radius-sm);
+}
+
+/* 输入框样式 */
+.el-input__wrapper {
+    border-radius: var(--radius-sm);
+}
+
+/* 卡片样式 */
+.el-card {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+/* 空状态样式 */
+.el-empty {
+    padding: var(--space-xl) 0;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-gray);
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

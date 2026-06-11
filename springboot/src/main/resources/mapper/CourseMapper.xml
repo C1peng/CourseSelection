@@ -1,0 +1,68 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CourseMapper">
+
+    <select id="selectAll" resultType="com.example.entity.VO.CourseVO">
+        select c.* ,d.dept_name as deptName
+        from course c
+        left join department d on c.dept_id = d.dept_id
+        <where>
+            <if test="courseInfo != null">
+                course_id like concat(#{courseInfo},'%')
+                or course_name like concat('%',#{courseInfo},'%')
+            </if>
+            <if test="courseType != null">
+                and course_type = #{courseType}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.Course">
+        insert into course (course_id, course_name, hours, credits, course_type, status, dept_id)
+        values (#{courseId}, #{courseName}, #{hours}, #{credits}, #{courseType}, #{status}, #{deptId})
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Course">
+        update `course`
+        <set>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="courseName != null">
+                course_name = #{courseName},
+            </if>
+            <if test="hours != null">
+                hours = #{hours},
+            </if>
+            <if test="credits != null">
+                credits = #{credits},
+            </if>
+            <if test="courseType != null">
+                course_type = #{courseType},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from course where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="existsByCourseName" resultType="java.lang.Boolean">
+        select exists(select 1 from course where course_name = #{courseName})
+    </select>
+</mapper>

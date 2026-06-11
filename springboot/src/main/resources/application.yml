@@ -1,0 +1,40 @@
+server:
+  port: 9090
+
+# 数据库配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+#    password: chen2312878538
+    password: 123456
+    url: jdbc:mysql://localhost:3306/system?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+# 配置mybatis实体和xml映射
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.entity
+  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+#fileBaseUrl: http://localhost:${server.port}
+
+# JWT配置
+#jwt:
+#  secret: mySecretKeyForStudentCourseSystem   # JWT密钥，请在生产环境中使用更安全的密钥
+#  expiration: 43200  # JWT过期时间（秒），默认12小时
+
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    bucketName: nanzhou
+    region: cn-beijing
+  ai:
+    api-key: sk-3f402e32249a44cc845dbc059779b18c
+    model: qwen-turbo
+    timeout: 30000

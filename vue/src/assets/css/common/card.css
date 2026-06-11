@@ -1,0 +1,199 @@
+/**
+ * 卡片组件样式
+ * 统一系统中所有卡片的外观
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 基础卡片 ==================== */
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==================== 现代卡片（带边框） ==================== */
+.card--modern {
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.card--modern:hover {
+  transform: translateY(-2px);
+}
+
+/* ==================== 卡片头部 ==================== */
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, var(--bg-gray) 0%, var(--bg-white) 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card__header-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.card__header-icon {
+  font-size: var(--font-size-xl);
+  color: var(--front-primary);
+}
+
+.card__header-text {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.card__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* ==================== 卡片内容区 ==================== */
+.card__body {
+  padding: var(--space-lg);
+}
+
+.card__body--no-padding {
+  padding: 0;
+}
+
+/* ==================== 渐变卡片变体 ==================== */
+.card--gradient-1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.card--gradient-2 {
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  color: #fff;
+}
+
+.card--gradient-3 {
+  background: linear-gradient(135deg, #ff7675 0%, #ff9f43 100%);
+  color: #fff;
+}
+
+.card--gradient-4 {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  color: #fff;
+}
+
+/* 渐变卡片内的文字样式 */
+.card--gradient-1 .card__header-icon,
+.card--gradient-2 .card__header-icon,
+.card--gradient-3 .card__header-icon,
+.card--gradient-4 .card__header-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ==================== 统计卡片 ==================== */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.stat-card__icon {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.stat-card__icon .el-icon {
+  font-size: 28px;
+  color: #fff;
+}
+
+.stat-card__content {
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card__value {
+  font-size: 36px;
+  font-weight: var(--font-weight-bold);
+  margin: var(--space-sm) 0 var(--space-xs);
+  line-height: 1;
+}
+
+.stat-card__label {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-card__trend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+}
+
+.stat-card__decoration {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* ==================== 小卡片 ==================== */
+.card--small {
+  padding: var(--space-md);
+}
+
+.card--small .card__header {
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+  
+  .card__header {
+    padding: var(--space-sm) var(--space-md);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  
+  .stat-card__value {
+    font-size: 28px;
+  }
+  
+  .stat-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .stat-card__icon .el-icon {
+    font-size: 22px;
+  }
+}

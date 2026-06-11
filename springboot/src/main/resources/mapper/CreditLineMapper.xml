@@ -1,0 +1,95 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CreditLineMapper">
+
+    <select id="selectByDeptAndGradeAndSort" resultType="com.example.entity.CreditLine">
+        select * from credit_line
+        where dept_id = #{deptId}
+          and grade = #{grade}
+          and sort = #{sort}
+    </select>
+
+    <insert id="insert" parameterType="com.example.entity.CreditLine" useGeneratedKeys="true" keyProperty="id">
+        insert into credit_line (dept_id, grade, sort, public_credit, foreign_language_credit, sport_credit, art_credit)
+        values (#{deptId}, #{grade}, #{sort}, #{publicCredit}, #{foreignLanguageCredit}, #{sportCredit}, #{artCredit})
+    </insert>
+
+    <update id="update" parameterType="com.example.entity.CreditLine">
+        update credit_line
+        set dept_id = #{deptId},
+            grade = #{grade},
+            sort = #{sort},
+            public_credit = #{publicCredit},
+            foreign_language_credit = #{foreignLanguageCredit},
+            sport_credit = #{sportCredit},
+            art_credit = #{artCredit}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from credit_line where id = #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.example.entity.CreditLine">
+        select * from credit_line where id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.example.entity.CreditLine">
+        select * from credit_line
+    </select>
+
+    <select id="selectByCondition" parameterType="com.example.entity.DTO.CreditLinePageQueryDTO" resultType="com.example.entity.CreditLine">
+        select * from credit_line
+        <where>
+            <if test="deptInfo != null">
+                 and dept_id = #{deptInfo}
+            </if>
+            <if test="grade != null">
+                and grade = #{grade}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from credit_line where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectTotalId" resultType="java.lang.Integer">
+        select id from credit_line
+        where dept_id = #{deptId}
+          and grade = #{grade}
+          and sort = #{sort}
+    </select>
+
+    <update id="updateBatch" parameterType="map">
+        <foreach collection="creditTypes" item="creditType" separator=";">
+            update credit_line
+            set public_credit = #{creditType.publicCredit},
+                foreign_language_credit = #{creditType.foreignLanguageCredit},
+                sport_credit = #{creditType.sportCredit},
+                art_credit = #{creditType.artCredit}
+            where id = #{creditType.id}
+        </foreach>
+    </update>
+
+    <select id="existsByDIdAndGrade" resultType="java.lang.Boolean">
+        SELECT EXISTS(
+            select * from credit_line
+            where dept_id = #{deptId}
+              and grade = #{grade}
+        )
+    </select>
+
+    <insert id="add" parameterType="java.util.List">
+        insert into credit_line (dept_id, grade, sort, public_credit, foreign_language_credit, sport_credit, art_credit)
+        values
+        <foreach collection="creditLines" item="creditLine" separator=",">
+            (#{creditLine.deptId}, #{creditLine.grade}, #{creditLine.sort}, #{creditLine.publicCredit}, #{creditLine.foreignLanguageCredit}, #{creditLine.sportCredit}, #{creditLine.artCredit})
+        </foreach>
+    </insert>
+
+</mapper>

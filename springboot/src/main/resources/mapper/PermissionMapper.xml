@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.entity.Permission">
+        <id column="id" property="id"/>
+        <result column="permission_code" property="permissionCode"/>
+        <result column="permission_name" property="permissionName"/>
+        <result column="module" property="module"/>
+        <result column="action" property="action"/>
+    </resultMap>
+    <!-- 查询所有权限 -->
+    <select id="selectAll" parameterType="PermissionPageQueryDTO" resultMap="BaseResultMap">
+        SELECT * FROM `permission`
+        <where>
+            <if test="name != null and name != ''">
+                AND permission_name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                AND permission_code LIKE CONCAT('%', #{code}, '%')
+            </if>
+            <if test="module != null and module != ''">
+                AND module LIKE CONCAT('%', #{module}, '%')
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <!-- 新增权限 -->
+    <insert id="insert" parameterType="com.example.entity.Permission" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `permission` (permission_code, permission_name, module, action)
+        VALUES (#{permissionCode}, #{permissionName}, #{module}, #{action})
+    </insert>
+
+    <!-- 更新权限 -->
+    <update id="update" parameterType="com.example.entity.Permission">
+        UPDATE `permission`
+        SET permission_code = #{permissionCode},
+            permission_name = #{permissionName},
+            module = #{module},
+            action = #{action}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 批量删除权限 -->
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM `permission` WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+<!--    <select id="findByUserIdAndType" parameterType="map" resultMap="BaseResultMap">-->
+<!--        SELECT DISTINCT p.*-->
+<!--        FROM `permission` p-->
+<!--                 INNER JOIN `role_permission` rp ON p.id = rp.permission_id-->
+<!--                 INNER JOIN `user_role` ur ON rp.role_id = ur.role_id-->
+<!--        WHERE ur.user_id = #{userId} AND ur.user_type = #{userType}-->
+<!--    </select>-->
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM `permission`  ORDER BY module, action
+    </select>
+
+    <!-- XML实现 -->
+    <select id="findPermissionsByRoleCodes" resultType="com.example.entity.Permission">
+        SELECT p.* FROM `permission` p
+        INNER JOIN `role_permission` rp ON p.id = rp.permission_id
+        INNER JOIN `role` r ON rp.role_id = r.id
+        WHERE r.role_code IN
+        <foreach item="code" collection="roleCodes" open="(" separator="," close=")">
+            #{code}
+        </foreach>
+    </select>
+
+
+</mapper>

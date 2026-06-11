@@ -1,0 +1,255 @@
+/**
+ * 后台列表页公共样式
+ * 用于统一管理后台列表展示页面的样式
+ */
+
+/* 导入 CSS 变量 */
+@import "../variables.css";
+
+/* ==================== 页面容器 ==================== */
+.list-page {
+  padding: var(--space-lg);
+  background: var(--manager-bg);
+  min-height: 100%;
+}
+
+/* ==================== 搜索区域 ==================== */
+.list-page__search {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.list-page__search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: flex-end;
+}
+
+.list-page__search-form .el-form-item {
+  margin-bottom: 0;
+}
+
+.list-page__search-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-left: auto;
+}
+
+/* ==================== 操作栏 ==================== */
+.list-page__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.list-page__toolbar-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.list-page__toolbar-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ==================== 表格区域 ==================== */
+.list-page__table {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.list-page__table .el-table {
+  --el-table-border-color: var(--border-color-light);
+  --el-table-header-bg-color: var(--bg-gray-light);
+  --el-table-row-hover-bg-color: #f5f7ff;
+}
+
+.list-page__table .el-table th.el-table__cell {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  background-color: var(--bg-gray-light);
+  padding: var(--space-md) 0;
+}
+
+.list-page__table .el-table td.el-table__cell {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  padding: var(--space-sm) 0;
+}
+
+/* ==================== 表格操作列 ==================== */
+.list-page__table-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.list-page__table-actions .el-button {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+}
+
+/* ==================== 分页区域 ==================== */
+.list-page__pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-gray-light);
+}
+
+/* ==================== 详情展示 ==================== */
+.list-page__detail {
+  padding: var(--space-md) 0;
+}
+
+.list-page__detail-item {
+  display: flex;
+  margin-bottom: var(--space-md);
+  align-items: flex-start;
+}
+
+.list-page__detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.list-page__detail-label {
+  width: 100px;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-right: var(--space-md);
+  flex-shrink: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.list-page__detail-value {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+/* ==================== 徽章样式 ==================== */
+.list-page__badge {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  background-color: var(--manager-primary);
+  color: white;
+  border-radius: 10px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  padding: 0 var(--space-xs);
+}
+
+/* ==================== 链接文字 ==================== */
+.list-page__link {
+  color: var(--manager-primary);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.list-page__link:hover {
+  color: var(--manager-primary-light);
+  text-decoration: underline;
+}
+
+/* ==================== 标签样式 ==================== */
+.list-page__tag {
+  border-radius: var(--radius-sm);
+  padding: 2px var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==================== 空状态 ==================== */
+.list-page__empty {
+  padding: var(--space-2xl) 0;
+}
+
+/* ==================== 弹窗样式 ==================== */
+.list-page__dialog .el-dialog {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.list-page__dialog .el-dialog__header {
+  background: linear-gradient(135deg, var(--bg-gray) 0%, var(--bg-white) 100%);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--space-lg);
+}
+
+.list-page__dialog .el-dialog__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.list-page__dialog .el-dialog__body {
+  padding: var(--space-lg);
+}
+
+.list-page__dialog .el-dialog__footer {
+  background: var(--bg-gray);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 768px) {
+  .list-page {
+    padding: var(--space-md);
+  }
+  
+  .list-page__search {
+    padding: var(--space-md);
+  }
+  
+  .list-page__search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .list-page__search-actions {
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+  
+  .list-page__toolbar {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: flex-start;
+  }
+  
+  .list-page__pagination {
+    justify-content: center;
+  }
+  
+  .list-page__detail-item {
+    flex-direction: column;
+  }
+  
+  .list-page__detail-label {
+    width: 100%;
+    text-align: left;
+    margin-right: 0;
+    margin-bottom: var(--space-xs);
+  }
+}

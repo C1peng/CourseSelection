@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SemesterTimeRangeMapper">
+    <select id="selectBySemester" resultType="com.example.entity.SemesterTimeRange">
+        SELECT * FROM semester_time_range WHERE semester = #{semester}
+    </select>
+    
+    <insert id="insert" parameterType="com.example.entity.SemesterTimeRange">
+        INSERT INTO semester_time_range (semester, course_create_start, course_create_end, course_select_start, course_select_end, created_time, updated_time)
+        VALUES (#{semester}, #{courseCreateStart}, #{courseCreateEnd}, #{courseSelectStart}, #{courseSelectEnd}, NOW(), NOW())
+    </insert>
+    
+    <update id="update" parameterType="com.example.entity.SemesterTimeRange">
+        UPDATE semester_time_range
+        SET course_create_start = #{courseCreateStart},
+            course_create_end = #{courseCreateEnd},
+            course_select_start = #{courseSelectStart},
+            course_select_end = #{courseSelectEnd},
+            updated_time = NOW()
+        WHERE semester = #{semester}
+    </update>
+    
+    <select id="selectCurrentSemester" resultType="com.example.entity.SemesterTimeRange">
+        SELECT * FROM semester_time_range
+        WHERE semester = (
+            SELECT CASE 
+                WHEN MONTH(NOW()) >= 9 THEN CONCAT(YEAR(NOW()), '-', YEAR(NOW()) + 1, '学年第一学期')
+                ELSE CONCAT(YEAR(NOW()) - 1, '-', YEAR(NOW()), '学年第二学期')
+            END
+        )
+    </select>
+    
+    <select id="selectAll" resultType="com.example.entity.SemesterTimeRange">
+        SELECT * FROM semester_time_range
+        ORDER BY semester DESC
+    </select>
+</mapper>

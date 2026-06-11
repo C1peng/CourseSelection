@@ -1,0 +1,284 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CSelectionMapper">
+
+    <select id="selectAll" resultType="com.example.entity.VO.admin.AdminCSelectionVO">
+        select cs.id, cs.course_id, c.course_name, cs.credits_type, cs.number
+        from course_section cs
+        left join course c on c.id = cs.course_id
+        <where>
+            cs.status = 3
+            <if test="teacherId != null">
+                and  c.dept_id = (select dept_id from teacher where id = #{teacherId})
+            </if>
+            <if test="courseId != null">
+                and cs.course_id = #{courseId}
+            </if>
+            <if test="courseName != null">
+                and c.course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="creditsType != null">
+                and cs.credits_type = #{creditsType}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectTCourseInfo" resultType="com.example.entity.VO.other.TeacherCSelectionVO">
+        select cs.id, cs.course_id, c.course_name, cs.credits_type, cs.number
+        from course_section cs
+        left join course c on c.id = cs.course_id
+        <where>
+            cs.status = 3
+            <if test="teacherId != null">
+                and  c.dept_id = (select dept_id from teacher where id = #{teacherId})
+            </if>
+            <if test="courseName != null">
+                and c.course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="creditsType != null">
+                and cs.credits_type = #{creditsType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSCourseInfo" resultType="com.example.entity.VO.other.StudentCSelectionVO">
+        select cs.id, cs.course_id, c.course_name, cs.credits_type, c.credits
+        from course_section cs
+        left join course c on c.id = cs.course_id
+        <where>
+            cs.status = 3
+            <if test="courseName != null">
+                and c.course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="creditsType != null">
+                and cs.credits_type = #{creditsType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDetail" resultType="com.example.entity.BO.CSType">
+        select cs.id, cs.course_id, c.course_name, c.credits, cs.teacher_id , t.name as teacher_name, cs.credits_type,
+               cs.place, cs.number, cs.current_students, cs.status, cs.semester, cs.course_total, cs.course_time, cs.course_number, cs.created_time
+        from course_section cs
+        left join teacher t on t.id = cs.teacher_id
+        left join course c on c.id = cs.course_id
+        <where>
+            cs.status != 3
+            <if test="courseId != null">
+                and cs.course_id = #{courseId}
+            </if>
+            <if test="courseName != null">
+                and c.course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="creditsType != null">
+                and cs.credits_type = #{creditsType}
+            </if>
+            <if test="teacherId != null">
+                and cs.teacher_id = #{teacherId}
+            </if>
+            <if test="teacherName != null">
+                and t.name like concat('%', #{teacherName}, '%')
+            </if>
+            <if test="semester != null">
+                and cs.semester like concat('%', #{semester}, '%')
+            </if>
+            <if test="status != null">
+                and cs.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSDetailInfo" resultType="com.example.entity.BO.CSType">
+        select cs.id, t.name as teacher_name, c.course_name, c.credits, cs.credits_type, cs.place,
+               cs.course_total, cs.course_time, cs.course_number
+        from (select scourse_id from student_section where student_id = #{studentId}) sts
+                 left join course_section cs on cs.id = sts.scourse_id
+                 left join course c on c.id = cs.course_id
+                 left join teacher t on t.id = cs.teacher_id
+        where cs.status != 3
+          and cs.semester = #{semester}
+    </select>
+
+    <select id="selectTeacherTimetable" resultType="com.example.entity.BO.CSType">
+        select c.course_name, cs.place, cs.course_total, cs.course_time, cs.course_number
+        from course_section cs
+            left join course c on c.id = cs.course_id
+        where cs.teacher_id = #{teacherId}
+          and cs.status != 3
+          and cs.semester = #{semester}
+    </select>
+
+    <select id="selectStudentTimetable" resultType="com.example.entity.BO.CSType">
+        select c.course_name, cs.place, cs.course_total, cs.course_time, cs.course_number
+        from (select scourse_id from student_section where student_id = #{studentId}) sts
+            left join course_section cs on cs.id = sts.scourse_id
+            left join course c on c.id = cs.course_id
+        where cs.status != 3
+          and cs.semester = #{semester}
+    </select>
+
+    <insert id="addInfo">
+        insert into course_section (course_id, credits_type, number, status)
+        values (#{courseId}, #{creditsType}, #{number}, #{status})
+    </insert>
+
+    <insert id="addDetails">
+        insert into course_section (course_id, teacher_id, credits_type, place, number, current_students,
+                                    status, semester, course_time, course_total, course_number, created_Time)
+        values (#{courseId}, #{teacherId}, #{creditsType}, #{place}, #{number}, #{currentStudents},
+                #{status}, #{semester}, #{courseTime}, #{courseTotal}, #{courseNumber}, #{createdTime})
+    </insert>
+
+    <update id="updateInfo">
+        update course_section
+        set credits_type = #{creditsType},
+            number       = #{number}
+        where course_id = #{courseId}
+        and status = '3'
+    </update>
+
+    <update id="updateDetails">
+        update course_section
+        <set>
+            teacher_id = #{teacherId},
+            place = #{place},
+            number = #{number},
+            semester = #{semester},
+            current_students = #{currentStudents},
+            status = #{status},
+            <if test="courseTime != null">
+                    course_time = #{courseTime},
+            </if>
+            <if test="courseTotal != null">
+                    course_total = #{courseTotal},
+            </if>
+            <if test="courseNumber != null">
+                    course_number = #{courseNumber}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from course_section where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--验证判断-->
+    <select id="ExistsById" resultType="java.lang.Boolean">
+        select exists(select 1
+                      from course_section
+                      where course_id = #{courseId}
+                        and status != '3'
+                      limit 1)
+    </select>
+
+    <select id="contrastTC" resultType="java.lang.Boolean">
+        SELECT EXISTS (
+            SELECT 1 FROM teacher t, course c
+            WHERE t.id = #{teacherId}
+              AND c.id = #{courseId}
+              AND t.dept_id = c.dept_id
+        ) AS is_match
+    </select>
+
+    <select id="checkNumber" resultType="java.lang.Boolean">
+        select (basic_cs.number >= #{number}) as is_within_capacity
+        from course_section basic_cs
+        where basic_cs.course_id = #{courseId}
+          and basic_cs.status = '3'
+    </select>
+
+    <select id="selectId" resultType="java.lang.Integer">
+        SELECT id
+        FROM course_section cs
+        WHERE cs.teacher_id = #{teacherId}
+          AND cs.status != '3'
+          AND cs.semester = #{semester}
+          AND (cs.course_time &amp; 31) = (#{courseTime} &amp; 31)
+          AND ((cs.course_time >> 5) &amp; #{courseTime} &gt;&gt; 5) != 0
+          AND (cs.course_number &amp; #{courseNumber}) != 0
+        LIMIT 1
+    </select>
+
+    <!-- 学生选课相关SQL -->
+    <select id="checkCourseExists" resultType="java.lang.Boolean">
+        select exists(select 1
+                      from course_section
+                      where id = #{courseId}
+                        and status != '3'
+                      limit 1)
+    </select>
+
+    <select id="checkCourseCapacity" resultType="java.lang.Boolean">
+        select (current_students &lt; number) as has_capacity
+        from course_section
+        where id = #{courseId}
+    </select>
+
+    <select id="checkStudentCourse" resultType="java.lang.Boolean">
+        select exists(select 1
+                      from student_section
+                      where student_id = #{studentId}
+                        and scourse_id = #{courseId}
+                      limit 1)
+    </select>
+
+    <select id="checkTimeConflict" resultType="java.lang.Integer">
+        SELECT cs.id
+        FROM course_section cs
+        JOIN student_section ss ON ss.scourse_id = cs.id
+        WHERE ss.student_id = #{studentId}
+          AND cs.status != '3'
+          AND cs.semester = #{semester}
+          AND (cs.course_time &amp; 31) = (#{courseTime} &amp; 31)
+          AND ((cs.course_time >> 5) &amp; #{courseTime} &gt;&gt; 5) != 0
+          AND (cs.course_number &amp; #{courseNumber}) != 0
+        LIMIT 1
+    </select>
+
+    <select id="checkSameCourseName" resultType="java.lang.Boolean">
+        select exists(
+            select 1
+            from student_section ss
+            join course_section cs on ss.scourse_id = cs.id
+            join course c on cs.course_id = c.id
+            where ss.student_id = #{studentId}
+              and c.course_name = (
+                  select c2.course_name
+                  from course_section cs2
+                  join course c2 on cs2.course_id = c2.id
+                  where cs2.id = #{courseId}
+              )
+              and cs.id != #{courseId}
+            limit 1
+        )
+    </select>
+
+    <insert id="insertStudentSelection">
+        insert into student_section (student_id, scourse_id, student_name)
+        values (#{studentId}, #{courseId}, #{studentName})
+    </insert>
+
+    <delete id="deleteStudentSelection">
+        delete from student_section
+        where student_id = #{studentId}
+          and scourse_id = #{courseId}
+    </delete>
+
+    <update id="updateCourseSelectionCount">
+        update course_section
+        set current_students = current_students + #{count}
+        where id = #{courseId}
+    </update>
+
+    <update id="updateStatus">
+        update course_section
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+</mapper>
